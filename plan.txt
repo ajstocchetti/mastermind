@@ -1,0 +1,6 @@
+TODO:
+X game engine
+- express app
+- mongo persistance
+- timestamp everything (game create, board set, attempt)
+- frontend
