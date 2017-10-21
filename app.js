@@ -24,9 +24,10 @@ app.post('/newgame', (req, res) => {
   res.status(200).send();
 });
 
-app.put('/attempt', (req, req) => {
+app.put('/attempt', (req, res) => {
   try {
-    mastermind.attempt(req.body.guess);
+    const guess = JSON.parse(req.body.guess);
+    mastermind.attempt(guess);
     const clean = {
       maxTries: mastermind.maxTries,
       tries: mastermind.tries,
@@ -53,6 +54,7 @@ app.use('*', function(req, res) {
 });
 
 app.use(function (err, req, res, next) {
+  console.log(err);
   res.status(500).json({
     mgs: 'Internal server error',
   });
