@@ -3,6 +3,7 @@ const compression = require('compression');
 const express = require('express');
 const helmet = require('helmet');
 const lusca = require('lusca');
+const path = require('path');
 const MasterMind = require('./engine');
 
 let mastermind;
@@ -16,6 +17,12 @@ app.use(lusca.xssProtection(true));
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/client/index.html'));
+});
+app.use(express.static(path.join(__dirname, '/client/public')));
+
 
 app.post('/newgame', (req, res) => {
   const { guesses, colors, pieces } = req.body;
@@ -47,7 +54,7 @@ app.put('/attempt', (req, res) => {
 /**
  * Error Handling
  */
-app.use('*', function(req, res) {
+app.use(function(req, res) {
     res.status(404).json({
       msg: 'The requestd page could not be found',
     });

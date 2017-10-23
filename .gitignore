@@ -1,3 +1,5 @@
+client/public/app.js
+
 # API keys and secrets
 .env
 
