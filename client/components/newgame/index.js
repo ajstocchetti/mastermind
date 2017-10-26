@@ -21,21 +21,32 @@ class newgame extends React.Component {
       };
     }
 
+    submitConfig = () => {
+      console.log(this.state);
+    }
+
     render() {
         return (
             <div>
-              <label>Guesses:</label>
-              <input type="number" value={this.state.guesses}
-                onChange={this.setItem('guesses').bind(this)}
-              />
-              <label>Colors:</label>
-              <input type="number" value={this.state.colors}
-                onChange={this.setItem('colors').bind(this)}
-              />
-              <label>Pieces:</label>
-              <input type="number" value={this.state.pieces}
-                onChange={this.setItem('pieces').bind(this)}
-              />
+              <div>
+                <label>Guesses:</label>
+                <input type="number" value={this.state.guesses}
+                  onChange={this.setItem('guesses').bind(this)}
+                />
+              </div>
+              <div>
+                <label>Colors:</label>
+                <input type="number" value={this.state.colors}
+                  onChange={this.setItem('colors').bind(this)}
+                />
+              </div>
+              <div>
+                <label>Pieces:</label>
+                <input type="number" value={this.state.pieces}
+                  onChange={this.setItem('pieces').bind(this)}
+                />
+              </div>
+              <button onClick={this.submitConfig}>New Game</button>
             </div>
         );
     };
