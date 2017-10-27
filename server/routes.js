@@ -1,37 +1,18 @@
-const bodyParser = require('body-parser');
-const compression = require('compression');
 const express = require('express');
-const helmet = require('helmet');
-const lusca = require('lusca');
-const path = require('path');
 const MasterMind = require('./engine');
 
 let mastermind;
+const router = express.Router();
 
-const app = express();
-// Security
-app.use(helmet());
-app.use(lusca.xframe('SAMEORIGIN'));
-app.use(lusca.xssProtection(true));
-// config
-app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/client/index.html'));
-});
-app.use(express.static(path.join(__dirname, '/client/public')));
-
-
-app.post('/newgame', (req, res) => {
+router.post('/newgame', (req, res) => {
   const { guesses, colors, pieces } = req.body;
   mastermind = new MasterMind(guesses, colors, pieces);
   mastermind.setBoardRandom();
   res.status(200).send();
 });
 
-app.put('/attempt', (req, res) => {
+
+router.put('/attempt', (req, res) => {
   try {
     const guess = JSON.parse(req.body.guess);
     mastermind.attempt(guess);
@@ -54,13 +35,13 @@ app.put('/attempt', (req, res) => {
 /**
  * Error Handling
  */
-app.use(function(req, res) {
+router.use(function(req, res) {
     res.status(404).json({
       msg: 'The requestd page could not be found',
     });
 });
 
-app.use(function (err, req, res, next) {
+router.use(function (err, req, res, next) {
   console.log(err);
   res.status(500).json({
     mgs: 'Internal server error',
@@ -68,4 +49,4 @@ app.use(function (err, req, res, next) {
 });
 
 
-module.exports = app;
+module.exports = router;

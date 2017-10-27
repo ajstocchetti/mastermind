@@ -4,7 +4,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: [
-        path.resolve(__dirname, 'client/index.js'),
+        path.resolve(__dirname, 'client/src/index.js'),
     ],
     output: {
         path: path.resolve(__dirname, 'client/public'),
@@ -13,32 +13,26 @@ module.exports = {
     },
     devtool: 'cheap-module-eval-source-map',
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        // new webpack.HotModuleReplacementPlugin()
     ],
     module: {
         rules: [{
             test: /\.js$/,
-            include: [
-                path.resolve(__dirname, 'client/components'),
-                path.resolve(__dirname, 'client/index.js'),
-            ],
+            include: [ path.resolve(__dirname, 'client/src') ],
             exclude: /node_modules/,
             use: [{
                 loader: 'babel-loader',
                 options: {
-                    presets: [
-                        'react',
-                    ],
-                    plugins: [require('babel-plugin-transform-class-properties')]
+                    presets: [ 'react' ],
+                    plugins: [ require('babel-plugin-transform-class-properties') ]
                 }
-            }, ]
+            }],
         }],
     },
-    // devServer: {
-    //     hot: true,
-    //     contentBase: './build/public',
-    //     inline: true,
-    //     publicPath: 'http://localhost:8080/',
-    //     port: 8080
-    // },
+    devServer: {
+      port: 3000,
+      historyApiFallback: {
+        index: './client/public/index.html'
+      },
+    },
 };

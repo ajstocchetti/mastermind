@@ -1,5 +1,5 @@
 const http = require('http');
-const app = require('./app');
+const app = require('./server/app');
 
 const httpServer = http.createServer(app);
 // const httpPort = process.env.NODE_ENV === 'production' ? 80 : 8000;
