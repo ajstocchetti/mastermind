@@ -1,5 +1,5 @@
 const React = require('react');
-const Blah = require('./newgame');
+const Newgame = require('./newgame');
 
 class App extends React.Component {
 
@@ -16,7 +16,7 @@ class App extends React.Component {
         return (
             <div style={{ marginTop: '25px' }}>
                 <h2>MasterMind!</h2>
-                <Blah />
+                <Newgame />
             </div>
         );
     };

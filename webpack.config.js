@@ -23,8 +23,11 @@ module.exports = {
             use: [{
                 loader: 'babel-loader',
                 options: {
-                    presets: [ 'react' ],
-                    plugins: [ require('babel-plugin-transform-class-properties') ]
+                    presets: [ 'react', 'env' ],
+                    plugins: [
+                      'transform-class-properties',
+                      'transform-object-rest-spread',
+                    ],
                 }
             }],
         }],
@@ -33,6 +36,12 @@ module.exports = {
       port: 3000,
       historyApiFallback: {
         index: './client/public/index.html'
+      },
+      proxy: {
+        "/api/**": {
+          target: "http://localhost:2323/",
+          secure: false,
+        },
       },
     },
 };

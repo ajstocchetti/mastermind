@@ -1,16 +1,16 @@
 const React = require('react');
-
-const defaultState = {
-    guesses: 10,
-    colors: 6,
-    pieces: 4,
-}
+const connect = require('react-redux').connect;
+const submit = require('../../redux/dispatcher').game.newGame;
 
 class newgame extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = defaultState;
+        this.state = {
+            guesses: 10,
+            colors: 6,
+            pieces: 4,
+        };
     }
 
     setItem = key => {
@@ -22,7 +22,7 @@ class newgame extends React.Component {
     }
 
     submitConfig = () => {
-      console.log(this.state);
+      this.props.submit(this.state.guesses, this.state.colors, this.state.pieces);
     }
 
     render() {
@@ -52,4 +52,4 @@ class newgame extends React.Component {
     };
 }
 
-module.exports = newgame;
+module.exports = connect(() => ({}), { submit })(newgame);
