@@ -1,26 +1,16 @@
 const React = require('react');
 const PropTypes = require('prop-types');
+const connect = require('react-redux').connect;
+const dispatcher = require('../../redux/dispatcher');
 const Guess = require('../guessspot/guess');
 require('./row.less');
 
 class Row extends React.Component {
   static propTypes = {
-    // submit: PropTypes.func.isRequired,
+    guess: PropTypes.array.isRequired,
     colors: PropTypes.number.isRequired,
-    spaces: PropTypes.number.isRequired,
+    update: PropTypes.func.isRequired,
   };
-
-  constructor(props) {
-    super(props);
-
-    // create aray of length `spaces`, all with val -1
-    // sorry this is sory of cryptic, but this is the best way to do it
-    // (because for loops suck)
-    const arr = Array.apply(null, Array(this.props.spaces)).map(() => -1);
-    this.state = {
-      guess: arr,
-    };
-  }
 
   advaceColor = (color) => {
     color = (++color == this.props.colors) ? -1 : color;
@@ -28,17 +18,16 @@ class Row extends React.Component {
   }
 
   updateSpot = (position) => () => {
-    const guess = this.state.guess;
-    guess[position] = this.advaceColor(guess[position]);
-    this.setState({ guess });
+    const color = this.advaceColor(this.props.guess[position]);
+    this.props.update(position, color);
   }
 
   render() {
-    const spots = this.state.guess.map((val, index) => {
+    const spots = this.props.guess.map((val, index) => {
       return (
         <Guess key={index}
           className="guess"
-          color={this.state.guess[index]}
+          color={this.props.guess[index]}
           change={this.updateSpot(index)}
         />);
     });
@@ -49,4 +38,14 @@ class Row extends React.Component {
 
 };
 
-module.exports = Row;
+function mapStateToProps(state) {
+  return {
+    guess: state.guess,
+    colors: state.game.numColors,
+  };
+}
+
+module.exports = connect(
+  mapStateToProps,
+  { update: dispatcher.guess.update }
+)(Row);

@@ -16,7 +16,7 @@ class newgame extends React.Component {
     setItem = key => {
       return function updateState(event) {
         const update = {};
-        update[key] = event.target.value;
+        update[key] = +event.target.value;
         this.setState(update);
       };
     }

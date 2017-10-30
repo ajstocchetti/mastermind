@@ -23,6 +23,8 @@ const reduce = (state = INITIAL_STATE, action) => {
         ...state,
         gameState: 'playing',
       };
+    // case actions.GAME_SUBMIT_GUESS_SUCCESS:
+    //   return
     default:
       return state
   }

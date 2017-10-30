@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "dev": "nodemon start.js",
-    "asdf": "nodemon --watch start.js --watch server start.js",
+    "dev": "nodemon --watch start.js --watch server start.js",
     "hot": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

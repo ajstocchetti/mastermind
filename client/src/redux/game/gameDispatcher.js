@@ -14,6 +14,22 @@ function newGame(tries, colors, pieces) {
   };
 }
 
+function guess(guess) {
+  return {
+    types: [
+      actions.GAME_SUBMIT_GUESS,
+      actions.GAME_SUBMIT_GUESS_SUCCESS,
+      actions.GAME_SUBMIT_GUESS_FAILURE,
+    ],
+    API: {
+      url: '/api/attempt',
+      method: 'PUT',
+      body: guess,
+    },
+  }
+}
+
 module.exports = {
   newGame,
+  guess,
 };

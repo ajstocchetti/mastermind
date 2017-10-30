@@ -5,4 +5,5 @@ module.exports = {
   GAME_SUBMIT_GUESS: 'game/guess',
   GAME_SUBMIT_GUESS_SUCCESS: 'game/guess-success',
   GAME_SUBMIT_GUESS_FAILURE: 'game/guess-fail',
+  GUESS_MODIFY_PIECE: 'guess/modify-guess',
 };
