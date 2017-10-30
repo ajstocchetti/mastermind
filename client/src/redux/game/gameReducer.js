@@ -3,9 +3,9 @@ const actions = require('../actions');
 const INITIAL_STATE = {
   gameState: 'uninitiated', // uninitiated, initializing, playing, won, loss
   tries: [],
-  maxTries: null,
-  numColors: null,
-  numPieces: null,
+  maxTries: 10,
+  numColors: 6,
+  numPieces: 4,
 };
 
 const reduce = (state = INITIAL_STATE, action) => {
@@ -16,15 +16,11 @@ const reduce = (state = INITIAL_STATE, action) => {
         maxTries: action.tries,
         numColors: action.colors,
         numPieces: action.pieces,
-        tried: [],
+        tries: [],
       };
     case actions.GAME_SUBMIT_NEW_SUCCESS:
-      return {
-        ...state,
-        gameState: 'playing',
-      };
-    // case actions.GAME_SUBMIT_GUESS_SUCCESS:
-    //   return
+    case actions.GAME_SUBMIT_GUESS_SUCCESS:
+      return action.RESPONSE.data;
     default:
       return state
   }
