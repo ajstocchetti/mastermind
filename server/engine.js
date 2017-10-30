@@ -28,7 +28,7 @@ class mmGuess {
 class mastermind {
   constructor(guesses, colors, pieces) {
     // TODO: better error handling of input validation
-    if (!(validateNum(guesses) || validateNum(colors) && validateNum(pieces))) throw new Error('Invalid input!');
+    if (!(validateNum(guesses) && validateNum(colors) && validateNum(pieces))) throw new Error('Invalid input!');
 
     this.maxTries = guesses;
     this.tries = [];

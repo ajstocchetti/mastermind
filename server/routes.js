@@ -6,19 +6,25 @@ const router = express.Router();
 
 function playerVisibleGame() {
   return {
-    maxTries: mastermind.maxTries,
     tries: mastermind.tries,
+    gameState: mastermind.gameState,
+    maxTries: mastermind.maxTries,
     numColors: mastermind.numColors,
     numPieces: mastermind.numPieces,
-    gameState: mastermind.gameState,
   };
 }
 
 router.post('/newgame', (req, res) => {
-  const { guesses, colors, pieces } = req.body;
-  mastermind = new MasterMind(guesses, colors, pieces);
-  mastermind.setBoardRandom();
-  res.json(playerVisibleGame());
+  try {
+    const { guesses, colors, pieces } = req.body;
+    mastermind = new MasterMind(guesses, colors, pieces);
+    mastermind.setBoardRandom();
+    res.json(playerVisibleGame());
+  } catch(err) {
+    res.status(400).json({
+      msg: err.message,
+    });
+  }
 });
 
 
