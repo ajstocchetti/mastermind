@@ -1,6 +1,5 @@
 const React = require('react');
 const Newgame = require('./newgame');
-// const Helper = require('./helper.js').default;
 const Row = require('./guessrow/guessrow');
 
 class App extends React.Component {

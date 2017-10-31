@@ -1,29 +1,4 @@
-// num guesses, num colors, num pieces
-
-class mmGuess {
-  constructor(guess, actual) {
-    this.guess = guess;
-    this.placement = 0;
-    this.color = 0;
-
-    const actualColors = {};
-    const guessColors = {};
-    actual.forEach((color, index) => {
-      const guessColor = guess[index];
-      if (guessColor == color) this.placement++;
-      else {
-        actualColors[color] = actualColors[color] ? actualColors[color]++ : 1;
-        guessColors[guessColor] = guessColors[guessColor] ? guessColors[guessColor]++ : 1;
-      }
-    });
-    Object.keys(actualColors).forEach(color => {
-      const numAct = actualColors[color];
-      const numGuess = guessColors[color] || 0;
-      if (numGuess > numAct) this.color += numAct;
-      else this.color += numGuess;
-    });
-  }
-}
+const Guess = require('./guess-check');
 
 class mastermind {
   constructor(guesses, colors, pieces) {
@@ -63,7 +38,7 @@ class mastermind {
     // TODO: validate input
     if (this.gameState != 'playing') throw new Error('Cannot attempt to solve game at this time');
 
-    const result = new mmGuess(guess, this.board);
+    const result = new Guess(guess, this.board);
     this.tries.push(result);
     if (result.placement == this.numPieces) this.gameState = 'win';
     else if (this.tries.length >= this.maxTries) this.gameState = 'loss';

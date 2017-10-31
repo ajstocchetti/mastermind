@@ -4,7 +4,6 @@ const express = require('express');
 const helmet = require('helmet');
 const lusca = require('lusca');
 const path = require('path');
-const MasterMind = require('./engine');
 const router = require('./routes');
 
 const app = express();

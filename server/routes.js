@@ -1,5 +1,5 @@
 const express = require('express');
-const MasterMind = require('./engine');
+const MasterMind = require('../game-engine/mastermind');
 
 let mastermind;
 const router = express.Router();
