@@ -1,7 +1,29 @@
 const Guess = require('./guess-check'); // guess class definition
-// const mongo = require('./mongo')
+const MongoClient = require('mongodb').MongoClient;
+
+let _db = null;
+
+function connect() {
+  if (_db) return Promise.resolve(_db);
+
+  return new Promise((resolve, reject) => {
+    MongoClient.connect('mongodb://localhost:27017/mastermind', function(err, db) {
+  		if (err) {
+  			console.log('Error connecting to MongoDb', err);
+        reject(err);
+  		} else {
+  			console.log('Successfully connected to MongoDb');
+  			_db = db;
+        resolve(db);
+  		}
+  	});
+  });
+}
+connect(); // connect on initialization
+
 
 module.exports = {
+  ready: connect,
   generateAll,
   makeSolutionSpace,
 }
@@ -104,7 +126,55 @@ function leftPad(num, size) {
 }
 
 
+function makeSolutionSpace(colors, spaces) {
+  const solutions = generateAll(colors, spaces);
+  const collection = `colors${colors}Xspaces${spaces}`;
 
+  return doSomeStuff(solutions, 0, 0, collection)
+  .then(() => {
+    console.log('Finished saving solution space');
+  }).catch(err => {
+    // should never get here
+    console.log('Error saving solution space');
+    console.log(err);
+  });
+}
+
+
+function doSomeStuff(solutions, solnIndex, guessIndex, collection) {
+  let finished = false;
+  const entries = [];
+
+  // batch 500 at a time
+  for(let x = 0; x < 500; x++) {
+    const entry = new Guess(solutions[guessIndex], solutions[solnIndex]);
+    entry.actual = solutions[solnIndex];
+    entries.push(entry);
+
+    // advance counters
+    guessIndex++;
+    if (guessIndex == solutions.length) {
+      guessIndex = 0;
+      solnIndex++;
+    }
+
+    // check if finished
+    if (guessIndex == 0 && solnIndex == solutions.length) {
+      finished = true;
+      break;
+    }
+  }
+
+  return _db.collection(collection).insertMany(entries)
+  .catch(err => {
+    console.log('error inserting into DB');
+    console.log(err);
+  }).then(() => {
+    console.log(`Processed guess ${guessIndex} of solution ${solnIndex}`);
+    if (finished) return Promise.resolve();
+    else return doSomeStuff(solutions, solnIndex, guessIndex, collection);
+  });
+}
 
 
 // function makeSolutionSpace(colors, spaces) {
