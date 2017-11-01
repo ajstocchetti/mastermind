@@ -147,9 +147,12 @@ function doSomeStuff(solutions, solnIndex, guessIndex, collection) {
 
   // batch 800 at a time
   for(let x = 0; x < 800; x++) {
-    const entry = new Guess(solutions[guessIndex], solutions[solnIndex]);
-    entry.actual = solutions[solnIndex];
-    entries.push(entry);
+    if (guessIndex != solnIndex) {
+      // skip the winning guess
+      const entry = new Guess(solutions[guessIndex], solutions[solnIndex]);
+      entry.actual = solutions[solnIndex];
+      entries.push(entry);
+    }
 
     // advance counters
     guessIndex++;
