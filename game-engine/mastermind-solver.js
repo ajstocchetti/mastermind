@@ -71,7 +71,7 @@ function generateAll10(colors, spaces) {
   const numCombos = Math.pow(colors, spaces);
   return range(numCombos)
     .map(decimal => decimal.toString(colors))
-    .map(num => leftPad(num, spaces).split(''));
+    .map(num => leftPad(num, spaces).split('').map(char => +char));
 }
 
 function generateAll36(colors, spaces) {
@@ -145,8 +145,8 @@ function doSomeStuff(solutions, solnIndex, guessIndex, collection) {
   let finished = false;
   const entries = [];
 
-  // batch 500 at a time
-  for(let x = 0; x < 500; x++) {
+  // batch 800 at a time
+  for(let x = 0; x < 800; x++) {
     const entry = new Guess(solutions[guessIndex], solutions[solnIndex]);
     entry.actual = solutions[solnIndex];
     entries.push(entry);
